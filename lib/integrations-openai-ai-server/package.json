@@ -1,0 +1,9 @@
+{
+  "name": "@workspace/integrations-openai-ai-server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/client.ts" },
+  "dependencies": { "openai": "^6.0.0" },
+  "devDependencies": { "@types/node": "catalog:" }
+}

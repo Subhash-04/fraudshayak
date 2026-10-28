@@ -1,0 +1,680 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: fraud
+    description: Fraud Sahayak case, conversation, evidence, analysis, and reporting operations
+paths:
+  /fraud-sahayak/guidance:
+    get:
+      operationId: getFraudGuidance
+      tags: [fraud]
+      summary: Download the sourced financial-fraud collection guide
+      responses:
+        "200":
+          description: Research-backed application collection guide, not a live portal schema
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+  /fraud-sahayak/chat/transcribe:
+    post:
+      operationId: transcribeFraudVoice
+      tags: [fraud]
+      summary: Transcribe a short voice recording for user review
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { $ref: "#/components/schemas/VoiceRecordingInput" }
+      responses:
+        "200":
+          description: Voice transcript; recording is not stored
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [text]
+                properties:
+                  text: { type: string }
+        "400":
+          description: Invalid or empty recording
+        "503":
+          description: Transcription temporarily unavailable
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /fraud-sahayak/sessions:
+    post:
+      operationId: createFraudSession
+      tags: [fraud]
+      summary: Create a complaint session
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionInput"
+      responses:
+        "201":
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+  /fraud-sahayak/sessions/{sessionId}:
+    get:
+      operationId: getFraudSession
+      tags: [fraud]
+      summary: Get a complaint session and case
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Session and case
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionDetail"
+        "404": { description: Session not found }
+  /fraud-sahayak/cases:
+    get:
+      operationId: listFraudCases
+      tags: [fraud]
+      summary: List complaint cases
+      responses:
+        "200":
+          description: Cases
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/FraudCase" }
+    post:
+      operationId: createFraudCase
+      tags: [fraud]
+      summary: Create a complaint case
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CaseInput" }
+      responses:
+        "201":
+          description: Case created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FraudCase" }
+  /fraud-sahayak/cases/{caseId}:
+    get:
+      operationId: getFraudCase
+      tags: [fraud]
+      summary: Get a complaint case
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Case details
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CaseDetail" }
+        "404": { description: Case not found }
+    patch:
+      operationId: updateFraudCase
+      tags: [fraud]
+      summary: Update complaint details
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CaseUpdate" }
+      responses:
+        "200":
+          description: Updated case
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FraudCase" }
+  /fraud-sahayak/chat/messages:
+    post:
+      operationId: sendFraudMessage
+      tags: [fraud]
+      summary: Process a chat message through the case agents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ChatMessageInput" }
+      responses:
+        "200":
+          description: User message and assistant reply
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatMessageResult" }
+  /fraud-sahayak/cases/{caseId}/session:
+    post:
+      operationId: ensureFraudCaseSession
+      tags: [fraud]
+      summary: Get or create the conversation for a complaint case
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Existing conversation
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+        "201":
+          description: Conversation created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+        "404": { description: Case not found }
+  /fraud-sahayak/cases/{caseId}/analyze:
+    post:
+      operationId: analyzeFraudCase
+      tags: [fraud]
+      summary: Run case analysis
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Financial and fraud analysis
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Analysis" }
+  /fraud-sahayak/cases/{caseId}/complaint:
+    get:
+      operationId: getFraudComplaint
+      tags: [fraud]
+      summary: Get the current complaint draft
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Complaint draft
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Complaint" }
+    post:
+      operationId: generateFraudComplaint
+      tags: [fraud]
+      summary: Generate a factual complaint draft
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Complaint draft
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Complaint" }
+    patch:
+      operationId: updateFraudComplaint
+      tags: [fraud]
+      summary: Edit the complaint draft
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ComplaintUpdate" }
+      responses:
+        "200":
+          description: Updated complaint
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Complaint" }
+  /fraud-sahayak/cases/{caseId}/agents:
+    get:
+      operationId: getFraudAgentRuns
+      tags: [fraud]
+      summary: Get actual agent execution history
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Agent runs
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/AgentRun" }
+  /fraud-sahayak/cases/{caseId}/evidence:
+    post:
+      operationId: uploadFraudEvidence
+      tags: [fraud]
+      summary: Upload evidence for a case
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { $ref: "#/components/schemas/EvidenceUploadInput" }
+      responses:
+        "201":
+          description: Evidence validated and recorded
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Evidence" }
+        "400": { description: Invalid file }
+        "413": { description: File too large }
+  /fraud-sahayak/cases/{caseId}/complaint/approve:
+    post:
+      operationId: approveFraudComplaint
+      tags: [fraud]
+      summary: Record explicit complaint approval
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ComplaintApproveInput" }
+      responses:
+        "200":
+          description: Approval state recorded
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Complaint" }
+  /fraud-sahayak/cases/{caseId}/export/json:
+    get:
+      operationId: exportFraudCaseJson
+      tags: [fraud]
+      summary: Export case information as JSON
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Case JSON
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CaseDetail" }
+  /fraud-sahayak/cases/{caseId}/export/pdf:
+    get:
+      operationId: exportFraudComplaintPdf
+      tags: [fraud]
+      summary: Export the complaint as a PDF
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Printable complaint PDF
+          content:
+            application/pdf:
+              schema: { type: string, format: binary }
+  /fraud-sahayak/cases/{caseId}/submission:
+    post:
+      operationId: prepareFraudSubmission
+      tags: [fraud]
+      summary: Prepare a user-controlled official reporting handoff
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Filing readiness
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SubmissionReadiness" }
+  /fraud-sahayak/cases/{caseId}/acknowledgement:
+    post:
+      operationId: recordFraudAcknowledgement
+      tags: [fraud]
+      summary: Record a user-reported official acknowledgement
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AcknowledgementInput" }
+      responses:
+        "200":
+          description: Acknowledgement recorded as user-reported
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FraudCase" }
+  /fraud-sahayak/dashboard:
+    get:
+      operationId: getFraudDashboard
+      tags: [fraud]
+      summary: Get case and agent activity summary
+      responses:
+        "200":
+          description: Dashboard totals from persisted cases
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DashboardSummary" }
+components:
+  schemas:
+    VoiceRecordingInput:
+      type: object
+      required: [file]
+      properties:
+        file: { type: string, format: binary }
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    SessionInput:
+      type: object
+      properties:
+        language: { type: string, enum: [en, te] }
+    Session:
+      type: object
+      required: [id, caseId, language, createdAt]
+      properties:
+        id: { type: string }
+        caseId: { type: string }
+        language: { type: string, enum: [en, te] }
+        createdAt: { type: string, format: date-time }
+    SessionDetail:
+      allOf:
+        - $ref: "#/components/schemas/Session"
+        - type: object
+          required: [messages, case]
+          properties:
+            messages:
+              type: array
+              items: { $ref: "#/components/schemas/Message" }
+            case: { $ref: "#/components/schemas/CaseDetail" }
+    CaseInput:
+      type: object
+      properties:
+        title: { type: string }
+        language: { type: string, enum: [en, te] }
+    CaseUpdate:
+      type: object
+      properties:
+        intakeDetails:
+          type: object
+          additionalProperties: { type: string, maxLength: 2500 }
+        complainantName: { type: ["string", "null"] }
+        contactNumber: { type: ["string", "null"] }
+        email: { type: ["string", "null"] }
+        state: { type: ["string", "null"] }
+        district: { type: ["string", "null"] }
+        incidentDescription: { type: ["string", "null"] }
+        incidentDate: { type: ["string", "null"], format: date }
+        bank: { type: ["string", "null"] }
+        category: { type: ["string", "null"] }
+        reportedAmount: { type: ["number", "null"], minimum: 0 }
+        transactionReference: { type: ["string", "null"] }
+        status: { type: string }
+    FraudCase:
+      type: object
+      required: [id, title, status, language, category, reportedAmount, evidenceCount, createdAt, updatedAt]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        status: { type: string }
+        language: { type: string, enum: [en, te] }
+        category: { type: ["string", "null"] }
+        reportedAmount: { type: number }
+        evidenceCount: { type: integer }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    CaseDetail:
+      allOf:
+        - $ref: "#/components/schemas/FraudCase"
+        - type: object
+          required: [complainantName, contactNumber, email, state, district, incidentDescription, incidentDate, bank, transactionReference, messages, transactions, evidence, missingFields, analysis, complaint, acknowledgement, intakeDetails, collectionChecklist, portalCategory, draftStale]
+          properties:
+            intakeDetails:
+              type: object
+              additionalProperties: { type: string }
+            portalCategory: { type: string }
+            draftStale: { type: boolean }
+            collectionChecklist:
+              type: array
+              items: { $ref: "#/components/schemas/CollectionChecklistItem" }
+            complainantName: { type: ["string", "null"] }
+            contactNumber: { type: ["string", "null"] }
+            email: { type: ["string", "null"] }
+            state: { type: ["string", "null"] }
+            district: { type: ["string", "null"] }
+            incidentDescription: { type: ["string", "null"] }
+            incidentDate: { type: ["string", "null"] }
+            bank: { type: ["string", "null"] }
+            transactionReference: { type: ["string", "null"] }
+            messages:
+              type: array
+              items: { $ref: "#/components/schemas/Message" }
+            transactions:
+              type: array
+              items: { $ref: "#/components/schemas/Transaction" }
+            evidence:
+              type: array
+              items: { $ref: "#/components/schemas/Evidence" }
+            missingFields:
+              type: array
+              items: { type: string }
+            analysis: { oneOf: [{ $ref: "#/components/schemas/Analysis" }, { type: "null" }] }
+            complaint: { oneOf: [{ $ref: "#/components/schemas/Complaint" }, { type: "null" }] }
+            acknowledgement: { type: ["string", "null"] }
+    CollectionChecklistItem:
+      type: object
+      required: [key, question, answer, complete, unknown]
+      properties:
+        key: { type: string }
+        question: { type: string }
+        answer: { type: ["string", "null"] }
+        complete: { type: boolean }
+        unknown: { type: boolean }
+    ChatMessageInput:
+      type: object
+      required: [sessionId, text]
+      properties:
+        sessionId: { type: string }
+        text: { type: string, minLength: 1, maxLength: 10000 }
+    ChatMessageResult:
+      type: object
+      required: [userMessage, assistantMessage, case, agentRuns]
+      properties:
+        userMessage: { $ref: "#/components/schemas/Message" }
+        assistantMessage: { $ref: "#/components/schemas/Message" }
+        case: { $ref: "#/components/schemas/CaseDetail" }
+        agentRuns:
+          type: array
+          items: { $ref: "#/components/schemas/AgentRun" }
+    Message:
+      type: object
+      required: [id, role, text, createdAt]
+      properties:
+        id: { type: string }
+        role: { type: string, enum: [user, assistant, system] }
+        text: { type: string }
+        createdAt: { type: string, format: date-time }
+    Transaction:
+      type: object
+      required: [id, amount, source, reference, bank, date, authorized]
+      properties:
+        id: { type: string }
+        amount: { type: number }
+        source: { type: string }
+        reference: { type: ["string", "null"] }
+        bank: { type: ["string", "null"] }
+        date: { type: ["string", "null"] }
+        authorized: { type: ["boolean", "null"] }
+    Evidence:
+      type: object
+      required: [id, name, mimeType, size, sha256, extractionStatus, createdAt]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        mimeType: { type: string }
+        size: { type: integer }
+        sha256: { type: string }
+        extractionStatus: { type: string }
+        extractedText: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+    EvidenceUploadInput:
+      type: object
+      required: [file]
+      properties:
+        file: { type: string, format: binary }
+    Analysis:
+      type: object
+      required: [category, confidence, urgency, reportedTotal, evidenceSupportedTotal, unrecoveredTotal, transactionCount, timeline, patterns, conflicts, missingFields, recommendations, provider]
+      properties:
+        category: { type: string }
+        confidence: { type: number }
+        urgency: { type: string }
+        reportedTotal: { type: number }
+        evidenceSupportedTotal: { type: number }
+        unrecoveredTotal: { type: number }
+        transactionCount: { type: integer }
+        timeline:
+          type: array
+          items: { type: string }
+        patterns:
+          type: array
+          items: { type: string }
+        conflicts:
+          type: array
+          items: { type: string }
+        missingFields:
+          type: array
+          items: { type: string }
+        recommendations:
+          type: array
+          items: { type: string }
+        provider: { type: string, enum: [deterministic, openai-compatible] }
+    Complaint:
+      type: object
+      required: [caseId, version, title, narrative, transactionSchedule, evidenceIndex, checklist, approved, updatedAt]
+      properties:
+        sourceFingerprint: { type: string }
+        caseId: { type: string }
+        version: { type: integer }
+        title: { type: string }
+        narrative: { type: string }
+        transactionSchedule:
+          type: array
+          items: { $ref: "#/components/schemas/Transaction" }
+        evidenceIndex:
+          type: array
+          items: { type: string }
+        checklist:
+          type: array
+          items: { type: string }
+        approved: { type: boolean }
+        updatedAt: { type: string, format: date-time }
+    ComplaintUpdate:
+      type: object
+      properties:
+        title: { type: string }
+        narrative: { type: string }
+    ComplaintApproveInput:
+      type: object
+      required: [approved]
+      properties:
+        approved: { type: boolean }
+    AgentRun:
+      type: object
+      required: [id, agent, trigger, status, inputSummary, outputSummary, durationMs, createdAt]
+      properties:
+        id: { type: string }
+        agent: { type: string }
+        trigger: { type: string }
+        status: { type: string, enum: [RUNNING, COMPLETED, FAILED] }
+        inputSummary: { type: string }
+        outputSummary: { type: string }
+        durationMs: { type: integer }
+        createdAt: { type: string, format: date-time }
+    SubmissionReadiness:
+      type: object
+      required: [ready, portalUrl, helpline, checklist, status]
+      properties:
+        ready: { type: boolean }
+        portalUrl: { type: string, format: uri }
+        helpline: { type: string }
+        checklist:
+          type: array
+          items: { type: string }
+        status: { type: string }
+    AcknowledgementInput:
+      type: object
+      required: [reference]
+      properties:
+        reference: { type: string, minLength: 1, maxLength: 100 }
+    DashboardSummary:
+      type: object
+      required: [totalCases, awaitingInformation, analyzed, complaintsPrepared, readyForFiling, userReportedFiled, verifiedFiled, agentFailures]
+      properties:
+        totalCases: { type: integer }
+        awaitingInformation: { type: integer }
+        analyzed: { type: integer }
+        complaintsPrepared: { type: integer }
+        readyForFiling: { type: integer }
+        userReportedFiled: { type: integer }
+        verifiedFiled: { type: integer }
+        agentFailures: { type: integer }
+

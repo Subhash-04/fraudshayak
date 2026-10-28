@@ -1,0 +1,79 @@
+{
+  "title": "India financial cybercrime complaint collection guide",
+  "reviewedOn": "2026-10-28",
+  "jurisdiction": "India",
+  "scope": "Application collection checklist, not an authoritative copy of the live NCRP form. Portal fields and categories can change. Unknown suspect details must not delay urgent reporting.",
+  "sources": [
+    {"id":"ncrp-checklist","title":"NCRP complainant checklist","url":"https://www.cybercrime.gov.in/Webform/Crime_AuthoLogin.aspx?rnt=5","access":"Official search-index excerpts; direct retrieval blocked."},
+    {"id":"ncrp-manual","title":"MHA NCRP citizen manual (2019; historical)","url":"https://www.cybercrime.gov.in/UploadMedia/MHA-CitizenManualReportOtherCyberCrime-v10.pdf","access":"Official search-index excerpts; direct retrieval blocked. Not treated as the current exhaustive category list."},
+    {"id":"i4c-faq","title":"I4C frequently asked questions","url":"https://i4c.mha.gov.in/FAQ.aspx","access":"Official search-index excerpts; direct retrieval blocked."},
+    {"id":"lnt-guide","title":"L&T Finance cybercrime reporting guide","url":"https://www.ltfinance.com/docs/default-source/default-document-library/risk-control/cybercrime_reporting.pdf?sfvrsn=b5ae3d8_1","access":"Full document retrieved. Secondary corroboration of seven financial reporting subcategories and filing steps."},
+    {"id":"ncrp-learning","title":"NCRP learning video categories","url":"https://www.cybercrime.gov.in/Webform/video-category.aspx","access":"Official search-index excerpts. Educational labels, not a verified live complaint dropdown."}
+  ],
+  "officialChecklist": [
+    "Incident date and time; a factual narrative. The indexed NCRP checklist states at least 200 characters.",
+    "Complainant identity, contact and address details. Keep a national ID ready for the official portal; do not upload it into this chat.",
+    "For financial loss: bank/wallet/merchant, transaction reference/UTR, transaction date and amount. Keep the original reference format; do not invent or force a 12-digit value.",
+    "Original relevant evidence. Indexed portal guidance mentions evidence up to 10 MB each and identity image up to 5 MB; confirm live portal restrictions.",
+    "Suspect names, contact details, URLs, handles and beneficiary details are optional when unknown."
+  ],
+  "portalSubcategories": [
+    "Business Email Compromise/ Email Takeover",
+    "Debit/ Credit Card Fraud/ SIM Swap Fraud",
+    "Demat/ Depository Fraud",
+    "E-Wallet Related Fraud",
+    "Fraud Call/ Vishing",
+    "Internet Banking Related Fraud",
+    "UPI Related Frauds"
+  ],
+  "commonQuestions": {
+    "moneyLost": "Was money actually debited or transferred? Answer yes or no.",
+    "incidentTime": "At approximately what time did this happen? Include the time zone, or say unknown.",
+    "paymentMode": "How was the money transferred: UPI, bank transfer, card, wallet, securities account, or another method?",
+    "affectedAccount": "Which account or wallet was affected? Share only a masked identifier or the last four digits, never a full card number.",
+    "transactionDetails": "List each affected transaction with its amount, date/time, bank or app and reference/UTR. If there was only one, say so. Mark genuinely unavailable details as unknown.",
+    "address": "What address and PIN code should appear in the complaint? You may choose to provide these only on the official portal.",
+    "suspectDetails": "What suspect name, phone, email, website, social handle or beneficiary details do you know? Say unknown if you have none. Do not share authentication secrets.",
+    "evidenceSummary": "Which original receipts, statements, messages, call records or screenshots do you have? You can attach relevant evidence or say none available.",
+    "bankReported": "Have you informed your bank or payment provider? Give the date and complaint reference if available, or say not yet.",
+    "helplineReported": "Have you called 1930 or already reported this on the cybercrime portal? Give an acknowledgement if available, or say not yet.",
+    "identityDocumentReady": "Do you have a national identity document ready for the official portal? Say yes, no or provide on portal. Do not send the document or ID number here.",
+    "detailsConfirmed": "Please review the case details and category checklist above. Are the recorded details accurate and are all affected transactions included? Reply 'I confirm all details' only after checking, or tell me what to correct."
+  },
+  "categories": [
+    {"name":"UPI payment fraud","portalMapping":"UPI Related Frauds","questions":{"upiApp":"Which UPI app was used, and was this a send payment, collect request, QR scan or mandate?","beneficiary":"What recipient UPI ID, displayed name or masked beneficiary details are known? Say unknown if unavailable.","paymentInducement":"What were you told the payment would do, and did you approve it yourself? Never share a UPI PIN."}},
+    {"name":"Debit or credit card fraud","portalMapping":"Debit/ Credit Card Fraud/ SIM Swap Fraud","questions":{"cardChannel":"Was the disputed transaction at an ATM, online, contactless or a shop? Give merchant/location if known.","cardPossession":"Was the card still with you, and had it been lost, stolen or blocked? Use only its last four digits.","simStatus":"Was mobile service lost or a SIM replaced around the incident? Say no or unknown if not applicable."}},
+    {"name":"Unauthorized bank transaction","portalMapping":"Internet Banking Related Fraud","questions":{"bankChannel":"Was this internet banking, mobile banking, NEFT, RTGS, IMPS, AEPS or another channel?","beneficiary":"What recipient bank, beneficiary name or masked account details are known? Do not guess.","authorization":"Did you authorize any transfer or give anyone access to the device? Describe what happened without sharing passwords."}},
+    {"name":"E-wallet fraud","portalMapping":"E-Wallet Related Fraud","questions":{"walletProvider":"Which wallet or merchant account was involved, and what is its masked identifier?","walletEvent":"Was this an unauthorized debit, account takeover, fake refund or another wallet event?","beneficiary":"What recipient wallet or merchant details are known? Say unknown if unavailable."}},
+    {"name":"Business email compromise","portalMapping":"Business Email Compromise/ Email Takeover","questions":{"emailIncident":"Which organization or business email was impersonated or taken over, and when was it discovered?","paymentChange":"Was an invoice or beneficiary instruction changed? Describe the original and changed instructions.","verification":"How was the request verified, and are original emails with full headers and invoices available?"}},
+    {"name":"Demat or depository fraud","portalMapping":"Demat/ Depository Fraud","questions":{"broker":"Which broker/depository participant and masked trading or demat identifier are involved?","securities":"Which securities, quantities, trades or unauthorized transfers are disputed? Include dates if known.","instructions":"What alerts, contract notes or transfer instructions are available, and was the broker notified?"}},
+    {"name":"Bank impersonation","portalMapping":"Fraud Call/ Vishing; use the actual payment channel if the live portal requires it.","questions":{"callerClaim":"Who did the caller claim to represent, which number or handle was used, and when did contact occur?","inducement":"What did the caller ask you to do, and what did you actually do? Do not repeat any secret codes.","beneficiary":"What recipient payment details are known? Say unknown if unavailable."}},
+    {"name":"Investment scam","portalMapping":"Demat/ Depository Fraud only for actual securities-account activity; otherwise select the closest live financial category/payment channel.","questions":{"investmentPlatform":"What platform, website, app, adviser, group or scheme was promoted? Include its URL/handle if known.","promisedReturns":"What returns were promised, what deposits were made, and was withdrawal refused or an extra fee requested?","beneficiary":"What recipient details and investment chats/receipts are available? Do not share wallet seed phrases or private keys."}},
+    {"name":"Fake job scam","portalMapping":"Select the closest live financial category and actual payment channel; job scam is a scenario, not a verified financial dropdown label.","questions":{"recruiter":"Which employer, recruiter, job/task platform or group contacted you, and how?","jobFees":"What job or task was promised and what recruitment, training, registration or withdrawal fees were demanded?","jobEvidence":"Which offer letters, task instructions, chats or receipts are available?"}},
+    {"name":"Loan app scam","portalMapping":"Select the closest live financial category/payment channel; report threats separately if applicable.","questions":{"loanApp":"What lender, loan app, website or agent was involved?","loanAmounts":"What amount was requested, actually received and repaid, and what fees were demanded?","loanThreats":"Were contacts accessed, threats made or advance fees demanded? Describe and preserve the messages."}},
+    {"name":"Remote access scam","portalMapping":"Select the actual payment channel; remote access is the method.","questions":{"remoteApp":"Which remote-access or screen-sharing app was installed, when, and at whose instruction?","deviceAccess":"What device access was granted and which accounts were affected? Never provide access codes.","containment":"Have you disconnected remote access and contacted the bank through a verified channel? Say not yet if not."}},
+    {"name":"OTP-related scam","portalMapping":"Select the actual payment channel; OTP misuse is the method.","questions":{"otpContext":"What was the claimed reason for requesting a code, and which service was affected? Do not type the code.","contactMethod":"Which phone, message, email or website requested it? Give identifiers if known.","simStatus":"Did the phone lose network service, or was a SIM replacement reported? Say no or unknown."}},
+    {"name":"Phishing","portalMapping":"Select the actual payment channel; phishing is the method.","questions":{"phishingSource":"Which link, domain, email, SMS or social handle was used? Do not open the link again.","dataExposure":"Which types of information were entered or permissions granted? Describe types only, not passwords or secret codes.","accountImpact":"Which accounts or transactions were affected and what security actions have been taken?"}},
+    {"name":"Online purchase scam","portalMapping":"Select the closest live financial category/payment channel; ordinary service disputes are not automatically fraud.","questions":{"seller":"Which seller, marketplace, website or social handle was used?","purchase":"What item/service was ordered, when, and what delivery or refund was promised? Include order reference if known.","dispute":"What was delivered, what contact/refund attempts were made, and why do you suspect deception?"}},
+    {"name":"Mistaken transfer or payment dispute","portalMapping":"Do not assume a cybercrime. Contact the bank/payment provider for a dispute or reversal; use NCRP only when deception or unauthorized activity is suspected.","questions":{"mistakeReason":"Was this an accidental wrong-recipient transfer, a service dispute, or intentional deception?","beneficiary":"What recipient details are known and have you contacted your bank for a reversal?","disputeReference":"What bank/provider dispute reference and response do you have? Say not yet if none."}},
+    {"name":"Other suspected financial fraud","portalMapping":"Confirm the actual payment method and choose the closest current official category; do not force a match.","questions":{"fraudMechanism":"What promise, threat, impersonation or unauthorized action caused the loss?","contactMethod":"How did the suspect contact you and which website, app, phone or handle was involved?","beneficiary":"What beneficiary or recipient details are known? Say unknown if unavailable."}}
+  ],
+  "filingSteps": [
+    "For a recent unauthorized loss, immediately contact your bank's verified fraud channel and call 1930. Do not wait to finish this app's checklist.",
+    "Open https://www.cybercrime.gov.in/ and select financial fraud/report cybercrime. Confirm the current category and form fields.",
+    "Complete registration/login, OTP and captcha yourself on the official portal. Never share them with this app.",
+    "Transfer the prepared narrative, each transaction, complainant details and known suspect details. Upload original evidence and identity documents only where the official portal requests them.",
+    "Review the declaration, preview and submit yourself. The official acknowledgement is created by the portal, not by this app.",
+    "Save the portal's acknowledgement and submitted complaint PDF. An acknowledgement entered into this app is user-reported and unverified.",
+    "If you first report through 1930, I4C guidance says to complete the formal portal complaint within 24 hours using the acknowledgement. Follow the instructions in your SMS and the current portal."
+  ],
+  "safetyRules": [
+    "This application cannot submit to NCRP or certify an FIR, verified complaint, frozen funds or recovery.",
+    "Ask for details, not secrets. Never collect OTPs, PINs, CVVs, passwords, full card numbers, private keys or seed phrases.",
+    "Mask account identifiers in chat; provide full identifiers or national ID directly to the official portal if requested.",
+    "Unknown/not available is a valid answer for investigative questions. It must remain marked unknown, never guessed.",
+    "These additional scenario questions are app collection recommendations, not claimed government-mandatory fields.",
+    "Keep uploaded evidence and OCR text local. Only user-entered chat facts are used by the language-model agents.",
+    "Require explicit review of collected details before drafting, and separate approval before the user proceeds to filing."
+  ]
+}

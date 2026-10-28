@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Fraud Sahayak"
+description = "A bilingual financial fraud assistance app for documenting incidents, organizing evidence, calculating reported losses, and preparing a cybercrime complaint for user-controlled official filing."
+version = "1.0.0"
+id = "artifacts/fraud-sahayak"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25915
+
+[services.development]
+run = "pnpm --filter @workspace/fraud-sahayak run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/fraud-sahayak", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/fraud-sahayak/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25915"
+BASE_PATH = "/"
