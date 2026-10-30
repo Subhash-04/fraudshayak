@@ -5,6 +5,7 @@
 ## Features
 
 - Private, authenticated case workspaces using Clerk.
+- A helpline-first browser simulation: press 1 for WhatsApp-style intake, or 2 for spoken questions, followed by simulated SMS tickets and consented bank-packet preparation.
 - Chat and browser voice dictation, with transcript review before sending.
 - Replit OpenAI-assisted intake, classification and case review.
 - A sourced questionnaire covering 16 financial-fraud categories/scenarios.
@@ -72,8 +73,14 @@ The frontend uses same-origin `/api` routes. Outside the included artifact route
 
 ## Documentation and checks
 
+- [Architecture and data boundaries](docs/architecture.md) · [standalone diagram](docs/architecture.svg)
+- [Installation guide](docs/installation-guide.md)
+- [Feature list and delivery status](docs/features.md)
+- [Government business use case](docs/business-use-case.md)
+- [Business requirements document](docs/business-requirements.md)
 - [Feature audit and implementation limitations](docs/feature-audit.md)
 - [Financial fraud categories, collection details and filing steps](docs/financial-fraud-reference.md)
+- [Helpline, WhatsApp, SMS and bank-handover simulation](docs/helpline-simulation.md)
 - Agent reference data: `artifacts/api-server/src/fraud/knowledge/financial-fraud.json`
 
 ```sh
@@ -91,3 +98,9 @@ node --test /tmp/fraud-requirements.test.cjs
 Do not enter OTPs, PINs, passwords, CVVs, full card numbers or wallet seed phrases. Uploaded financial evidence and OCR text stay local to the service; reviewed voice recordings are sent to OpenAI for transcription. Text redaction is best effort, not a guarantee.
 
 This is not a compliance certification or a fully production-hardened deployment. Review the audit document before handling real-world evidence. Database records, credentials, uploaded evidence and private Replit session/checkpoint history are not part of this source-code export.
+
+## Government business model
+
+The intended business is selling Fraud Sahayak to government. Government would scale the service and integrate it with an authorised government WhatsApp number. This is a proposed deployment model, not an existing government contract or partnership. Live telephony, WhatsApp/SMS delivery, bank delivery and verified official filing/status integrations require separate authorisation, implementation and acceptance testing.
+
+The repository also contains a fictional animated walkthrough under `artifacts/fraud-sahayak-walkthrough`. It demonstrates chat-to-draft approval; it is not a recording of official filing.

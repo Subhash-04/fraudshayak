@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1100" viewBox="0 0 1200 1100" role="img" aria-labelledby="title desc">
+<title id="title">Fraud Sahayak architecture: prototype and government target</title>
+<desc id="desc">Browser helpline routes to simulated WhatsApp or browser voice, then an authenticated API and orchestrator. The user confirms facts and approves a draft before manual official filing. Live government channels and official tracking are proposed integrations.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#385c56"/></marker></defs>
+<rect width="1200" height="1100" fill="#f8f5ed"/>
+<style>text{font-family:Arial,sans-serif;fill:#163e38}.h{font-size:28px;font-weight:bold}.t{font-size:18px;font-weight:bold}.s{font-size:15px}.box{fill:white;stroke:#9fb6ad;stroke-width:1.5}.line{fill:none;stroke:#385c56;stroke-width:2;marker-end:url(#arrow)}</style>
+<text x="60" y="53" class="h">Fraud Sahayak — system architecture</text>
+<text x="60" y="83" class="s">Solid boxes: prototype responsibilities. Dashed area: proposed government integrations.</text>
+<rect x="390" y="110" width="420" height="65" rx="12" class="box"/>
+<text x="600" y="138" text-anchor="middle" class="t">Browser helpline simulation</text>
+<text x="600" y="161" text-anchor="middle" class="s">English / Telugu • not a live 1930 service</text>
+<path d="M500 175V192H290V210M700 175V192H910V210" class="line"/>
+<rect x="80" y="210" width="420" height="65" rx="12" class="box"/>
+<text x="290" y="238" text-anchor="middle" class="t">1 · WhatsApp-style web chat</text>
+<text x="290" y="260" text-anchor="middle" class="s">Simulated invite • text and uploads</text>
+<rect x="700" y="210" width="420" height="65" rx="12" class="box"/>
+<text x="910" y="238" text-anchor="middle" class="t">2 · Browser voice intake</text>
+<text x="910" y="260" text-anchor="middle" class="s">Recording → OpenAI transcript → user review</text>
+<path d="M290 275V295H600V315M910 275V295H600" class="line"/>
+<rect x="250" y="315" width="700" height="65" rx="12" class="box"/>
+<text x="600" y="343" text-anchor="middle" class="t">React / Vite → Clerk → Express API</text>
+<text x="600" y="366" text-anchor="middle" class="s">Owner-scoped cases • validation • language and consent state</text>
+<path d="M600 380V410" class="line"/>
+<rect x="60" y="410" width="1080" height="230" rx="18" fill="#e6efe9" stroke="#84a59a"/>
+<text x="90" y="442" class="t">LangGraph workflow + API-driven helpers</text>
+<text x="90" y="466" class="s">Responsibilities, not six independent always-running workers</text>
+<g class="box"><rect x="90" y="485" width="300" height="55" rx="9"/><rect x="450" y="485" width="300" height="55" rx="9"/><rect x="810" y="485" width="300" height="55" rx="9"/><rect x="90" y="563" width="300" height="55" rx="9"/><rect x="450" y="563" width="300" height="55" rx="9"/><rect x="810" y="563" width="300" height="55" rx="9"/></g>
+<text x="240" y="518" text-anchor="middle" class="t">Conversation intake</text>
+<text x="600" y="518" text-anchor="middle" class="t">Category / missing details</text>
+<text x="960" y="518" text-anchor="middle" class="t">Financial review</text>
+<text x="240" y="596" text-anchor="middle" class="t">Local evidence checks</text>
+<text x="600" y="596" text-anchor="middle" class="t">Complaint preparation</text>
+<text x="960" y="596" text-anchor="middle" class="t">Guidance / local tracking</text>
+<path d="M390 512H450M750 512H810M600 640V670" class="line"/>
+<rect x="60" y="670" width="1080" height="68" rx="12" class="box"/>
+<text x="600" y="698" text-anchor="middle" class="t">Confirm facts → review draft → explicit approval → PDF / JSON export</text>
+<text x="600" y="722" text-anchor="middle" class="s">Victim files on official portal. User-entered acknowledgement remains unverified.</text>
+<rect x="60" y="760" width="1080" height="100" rx="12" class="box"/>
+<text x="90" y="790" class="t">Shared services and privacy boundary</text>
+<text x="90" y="816" class="s">PostgreSQL • sourced category rules • Replit OpenAI for entered text / reviewed voice</text>
+<text x="90" y="841" class="s">Local OCR / PDF extraction; evidence not sent to external models. File durability needs production work.</text>
+<rect x="60" y="885" width="1080" height="170" rx="12" fill="#fff1d9" stroke="#b78a42" stroke-dasharray="8 5"/>
+<text x="90" y="919" class="t">PROPOSED · government-operated scale-up</text>
+<text x="90" y="950" class="s">Authorised helpline / IVR → government WhatsApp number → signed gateway and durable queue</text>
+<text x="90" y="980" class="s">Operator review • approved durable evidence store • consented verified bank handover</text>
+<text x="90" y="1010" class="s">Official submission / status adapters only with explicit authorisation and genuine receipts</text>
+<text x="90" y="1038" class="s">No claim of live messaging, automatic filing, fund freezing, recovery or government endorsement.</text>
+</svg>
